@@ -1,6 +1,9 @@
 package com.company.dirCrawler;
 
 import com.company.AppSettings;
+import com.company.fileScanner.FileScannerPool;
+import com.company.jobQueue.JobQueue;
+import com.company.model.FileScannerJob;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -46,12 +49,14 @@ public class DirCrawlerThread extends Thread{
             }
         }
 
+        System.out.println("Pitam dal je korpus");
         return true;
     }
 
     private void generateJobs(ArrayList<Path> paths){
         for (Path p : paths){
-            System.out.println(p);
+            System.out.println("Dodajem posao "+ p +" u queue");
+            JobQueue.getInstance().getQueue().add(new FileScannerJob(p));
         }
     }
 

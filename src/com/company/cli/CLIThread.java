@@ -1,8 +1,8 @@
 package com.company.cli;
 
 import com.company.dirCrawler.DirCrawlerThread;
-import com.company.jobQueue.Job;
 import com.company.jobQueue.JobQueue;
+import com.company.resultRetriever.ResultRetrieverPool;
 
 import java.util.Scanner;
 import java.util.StringTokenizer;
@@ -12,9 +12,9 @@ public class CLIThread extends Thread {
     private Scanner in;
     private JobQueue queue;
 
-    public CLIThread(JobQueue queue){
+    public CLIThread(){
         in = new Scanner(System.in);
-        this.queue = queue;
+        this.queue = JobQueue.getInstance();
     }
 
     @Override
@@ -32,13 +32,12 @@ public class CLIThread extends Thread {
 
     private void interpret(String str){
         StringTokenizer tokenizer = new StringTokenizer(str);
-        System.out.println("Number of tokens = "+ tokenizer.countTokens());
         String commandString = tokenizer.nextToken();
         String parameterString = getParameterFromTokenizer(tokenizer);
         switch (commandString){
             case ("ad"): {
-                new DirCrawlerThread(parameterString).run();
                 System.out.println("Komanda je add data");
+                new DirCrawlerThread(parameterString).run();
                 break;
             }
             case ("aw"): {
@@ -47,6 +46,16 @@ public class CLIThread extends Thread {
             }
             case ("stop"): {
                 System.out.println("Komanda je stop");
+                break;
+            }
+            case ("get"): {
+                System.out.println("Komanda je get");
+                System.out.println("Rezultat za parametar "+ parameterString +" je: "+ ResultRetrieverPool.getInstance().getResult(parameterString));
+                break;
+            }
+            case ("query"): {
+                System.out.println("Komanda je query");
+                //System.out.println("Rezultat za parametar "+ parameterString +" je: "+ ResultRetrieverPool.getInstance().getQuery(parameterString));
                 break;
             }
             default: {

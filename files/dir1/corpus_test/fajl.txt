@@ -1,0 +1,1 @@
+test fajl pretrazujem ja test_word
